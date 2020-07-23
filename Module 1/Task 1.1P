@@ -1,0 +1,26 @@
+const byte trigger_Pin = 9;  //Initialize I/O pins
+const byte echo_Pin = 10;
+
+unsigned long duration;  //Since PulseIn return an unsigned Long 
+unsigned int distance;  //To save the distance
+
+void setup() {
+  Serial.begin(9600);   //Initialize Serial communication
+  pinMode(echo_Pin, INPUT);      //Echo pin as Input
+  pinMode(trigger_Pin, OUTPUT);   //Trigger pin as Output
+}
+
+void loop() {
+  digitalWrite(trigger_Pin, LOW); //Make Trigger pin Low at start
+  delay(1);
+  digitalWrite(trigger_Pin, HIGH);
+  delayMicroseconds(10);  //Make Trigger pin High
+  digitalWrite(trigger_Pin, LOW);
+
+  duration = pulseIn(echo_Pin, HIGH);  //Save the time it took ultrasonic wave to come back
+  distance = duration * 0.017; //((340*100)/10e6)/2
+
+  Serial.print("Distance (cm) : ");
+  Serial.println(distance);
+  delay(100);
+}
